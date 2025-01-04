@@ -142,13 +142,12 @@ def fmt_ynab_category(id, groups, categories):
 def list_ynab_ids(account_mapping, accounts, groups, categories):
     def pretty_print(ids, formatter):
         for item in sorted(ids.items(), key=lambda x: x[1]):
-            print(item[0], end=' ')
-            print(formatter(item[1]))
-            bean_account = account_mapping.get(item[0], '(none)')
-            print(' ' * 36, bean_account)
+            if not account_mapping.get(item[0]):
+                print("2020-01-01 open {}\n  ynab-id: \"{}\"".format(formatter(item[1]), item[0]))
 
-    pretty_print(accounts, formatter=lambda x: x.name)
-    pretty_print(categories, formatter=lambda x: fmt_ynab_category(x.id, groups, categories))
+            
+    pretty_print(accounts, formatter=lambda x: "Assets:TODO:{}".format(x.name))
+    pretty_print(categories, formatter=lambda x: "Expenses:TODO:{}".format(fmt_ynab_category(x.id, groups, categories)))
 
 def get_target_account(txn, adjustment_account):
     # subtransactions don't have a payee_name attribute, so we do this roundabout
